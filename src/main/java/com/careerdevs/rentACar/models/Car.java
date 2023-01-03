@@ -8,4 +8,65 @@ public class Car {
     private boolean isRented;
     private boolean fullOfGas;
     private double currentGas;
+
+    public String getMake() {
+        return make;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public boolean isRented() {
+        return isRented;
+    }
+
+    public void setRented(boolean rented) {
+        isRented = rented;
+    }
+
+    public boolean isFullOfGas() {
+        return fullOfGas;
+    }
+
+    public void setFullOfGas(boolean fullOfGas) {
+        this.fullOfGas = fullOfGas;
+    }
+
+    public double getCurrentGas() {
+        return currentGas;
+    }
+
+    public void setCurrentGas(double currentGas) {
+        this.currentGas = currentGas;
+    }
+
+    public Car() {
+
+    }
+
+    public Car(String make, String model, double rate, boolean isRented, boolean fullOfGas, double currentGas) {
+        this.make = make;
+        this.model = model;
+        this.rate = rate;
+        this.isRented = isRented;
+        this.fullOfGas = fullOfGas;
+        this.currentGas = currentGas;
+    }
 }

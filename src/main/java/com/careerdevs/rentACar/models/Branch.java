@@ -12,6 +12,8 @@ public class Branch {
     private Object location;
     @OneToMany(mappedBy = "homeBranch")
     private Set<Customer> customers;
+    @OneToMany(mappedBy = "branch")
+    private Set<Car> carInventory;
 
     public static class location {
         private String street;
@@ -83,6 +85,22 @@ public class Branch {
 
     public void setLocation(Object location) {
         this.location = location;
+    }
+
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
+    }
+
+    public Set<Car> getCarInventory() {
+        return carInventory;
+    }
+
+    public void setCarInventory(Set<Car> carInventory) {
+        this.carInventory = carInventory;
     }
 
     public Branch() {

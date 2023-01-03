@@ -41,6 +41,7 @@ public class CustomerController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
+    //TODO: Get all customers by branch id
 //    @PostMapping("/{branchId}/")
 //    public ResponseEntity<?> createNewCustomer(@RequestBody Customer customerData, Long branchId) {
 //        Branch customerBranch = branchRepository.findById(branchId).orElseThrow(
@@ -51,4 +52,5 @@ public class CustomerController {
 //
 //        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
 //    }
+
 }

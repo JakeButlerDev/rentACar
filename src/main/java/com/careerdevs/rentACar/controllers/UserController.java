@@ -32,7 +32,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
         Optional<User> foundUser = userRepository.findByUsername(username);
         return new ResponseEntity<>(foundUser, HttpStatus.OK);

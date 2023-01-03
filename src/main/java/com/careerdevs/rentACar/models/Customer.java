@@ -62,6 +62,22 @@ public class Customer {
         this.gender = gender;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Branch getHomeBranch() {
+        return homeBranch;
+    }
+
+    public void setHomeBranch(Branch homeBranch) {
+        this.homeBranch = homeBranch;
+    }
+
     public Customer() {
 
     }

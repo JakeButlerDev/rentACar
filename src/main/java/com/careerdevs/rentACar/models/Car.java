@@ -1,5 +1,9 @@
 package com.careerdevs.rentACar.models;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 public class Car {
 
     private String make;
@@ -8,6 +12,10 @@ public class Car {
     private boolean isRented;
     private boolean fullOfGas;
     private double currentGas;
+    @ManyToOne
+    @JoinColumn(name = "branch_id", referencedColumnName = "id")
+    @JsonIncludeProperties("id")
+    private Branch branch;
 
     public String getMake() {
         return make;
@@ -55,6 +63,14 @@ public class Car {
 
     public void setCurrentGas(double currentGas) {
         this.currentGas = currentGas;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 
     public Car() {

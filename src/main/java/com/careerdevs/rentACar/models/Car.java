@@ -1,11 +1,14 @@
 package com.careerdevs.rentACar.models;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
+@Entity
 public class Car {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     private String make;
     private String model;
     private double rate;
@@ -16,6 +19,14 @@ public class Car {
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
     @JsonIncludeProperties("id")
     private Branch branch;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getMake() {
         return make;

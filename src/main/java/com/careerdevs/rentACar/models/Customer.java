@@ -17,7 +17,7 @@ public class Customer {
     @JoinColumn(name = "user", referencedColumnName = "username")
     @JsonIncludeProperties("username")
     private User user;
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
     @JsonIncludeProperties("id")
     private Branch homeBranch;

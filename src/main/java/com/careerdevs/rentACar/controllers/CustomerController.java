@@ -41,6 +41,12 @@ public class CustomerController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
+    @PostMapping("/")
+    public ResponseEntity<Customer> createNewCustomer(@RequestBody Customer newCustomerData) {
+        Customer createdCustomer = customerRepository.save(newCustomerData);
+        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
+    }
+
     //TODO: Get all customers by branch id
 //    @PostMapping("/{branchId}/")
 //    public ResponseEntity<?> createNewCustomer(@RequestBody Customer customerData, Long branchId) {
@@ -52,5 +58,14 @@ public class CustomerController {
 //
 //        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
 //    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCustomerById(@PathVariable Long id) {
+        Customer deletedCustomer = customerRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST)
+        );
+        customerRepository.delete(deletedCustomer);
+        return new ResponseEntity<>(deletedCustomer, HttpStatus.OK);
+    }
 
 }

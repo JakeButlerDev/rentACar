@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -24,12 +25,17 @@ public class CarService {
         return carRepository.findById(carId).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Car deleteCar(Car car) {
-        Car foundCar = carRepository.findById(car.getId()).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+    public Car deleteCar(Long id) {
+        Car foundCar = carRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
         carRepository.delete(foundCar);
 
         return foundCar;
+    }
+
+    public List<Car> findAll() {
+        return carRepository.findAll();
     }
 
     public Set<Car> getBranchCars(Branch branch) {

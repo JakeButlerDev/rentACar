@@ -7,6 +7,7 @@ import com.careerdevs.rentACar.repositories.CarRepository;
 import com.careerdevs.rentACar.repositories.CustomerRepository;
 import com.careerdevs.rentACar.services.BranchService;
 import com.careerdevs.rentACar.services.CarService;
+import com.careerdevs.rentACar.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +28,15 @@ public class CarController {
     private BranchService branchService;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     // Will likely get rid of since all cars should be associated with a Branch
-//    @GetMapping("/")
-//    public ResponseEntity<?> getAllCars() {
-//        List<Car> allCarsInCompany = carService.findAll();
-//
-//        return new ResponseEntity<>(allCarsInCompany, HttpStatus.OK);
-//    }
+    @GetMapping("/")
+    public ResponseEntity<List<Car>> getAllCars() {
+        List<Car> allCarsInCompany = carService.findAll();
+
+        return new ResponseEntity<>(allCarsInCompany, HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Car> getById(@PathVariable Long id) {
@@ -45,16 +46,19 @@ public class CarController {
     }
 
     @GetMapping("branch/{branchId}")
-    public ResponseEntity<?> getCarsByBranchId(@PathVariable Long branchId) {
+    public ResponseEntity<Set<Car>> getCarsByBranchId(@PathVariable Long branchId) {
         Branch branch = branchService.findBranch(branchId);
         Set<Car> carsInBranch = carService.getBranchCars(branch);
 
         return new ResponseEntity<>(carsInBranch, HttpStatus.OK);
     }
 
+    //TODO: Get Car by customerId
+
     @PostMapping("/")
-    public ResponseEntity<?> createNewCar(@RequestBody Car newCarData) {
+    public ResponseEntity<Car> createNewCar(@RequestBody Car newCarData) {
         Car createdCar = carService.saveCar(newCarData);
+
         return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
     }
 
@@ -64,5 +68,12 @@ public class CarController {
         newCarData.setBranch(branch);
 
         return new ResponseEntity<>(carService.saveCar(newCarData), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Car> deleteCarById(@PathVariable Long carId) {
+        Car car = carService.deleteCar(carId);
+
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 }

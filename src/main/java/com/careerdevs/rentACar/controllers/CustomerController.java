@@ -5,6 +5,7 @@ import com.careerdevs.rentACar.models.Customer;
 import com.careerdevs.rentACar.repositories.BranchRepository;
 import com.careerdevs.rentACar.repositories.CustomerRepository;
 import com.careerdevs.rentACar.repositories.UserRepository;
+import com.careerdevs.rentACar.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.List;
 public class CustomerController {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Autowired
     private UserRepository userRepository;
@@ -27,31 +28,30 @@ public class CustomerController {
     private BranchRepository branchRepository;
 
     @GetMapping("/")
-    public ResponseEntity<?> getAllCustomers() {
-        List<Customer> allCustomers = customerRepository.findAll();
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        List<Customer> allCustomers = customerService.findAll();
 
         return new ResponseEntity<>(allCustomers, HttpStatus.OK);
     }
 
     @GetMapping("/{customerId}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long customerId) {
-        Customer requestedCustomer = customerRepository.findById(customerId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
+        Customer requestedCustomer = customerService.findById(customerId);
+
         return new ResponseEntity<>(requestedCustomer, HttpStatus.OK);
     }
 
     @GetMapping("/username/{username}")
     public ResponseEntity<Customer> getCustomerByUsername(@PathVariable String username) {
-        Customer customer = customerRepository.findByUser_username(username).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST)
-        );
+        Customer customer = customerService.findByUsername(username);
+
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<Customer> createNewCustomer(@RequestBody Customer newCustomerData) {
-        Customer createdCustomer = customerRepository.save(newCustomerData);
+        Customer createdCustomer = customerService.save(newCustomerData);
+
         return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
     }
 
@@ -72,10 +72,9 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomerById(@PathVariable Long id) {
-        Customer deletedCustomer = customerRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST)
-        );
-        customerRepository.delete(deletedCustomer);
+        Customer deletedCustomer = customerService.findById(id);
+        customerService.delete(id);
+
         return new ResponseEntity<>(deletedCustomer, HttpStatus.OK);
     }
 

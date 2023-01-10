@@ -3,6 +3,8 @@ package com.careerdevs.rentACar.controllers;
 import com.careerdevs.rentACar.models.User;
 import com.careerdevs.rentACar.repositories.CustomerRepository;
 import com.careerdevs.rentACar.repositories.UserRepository;
+import com.careerdevs.rentACar.services.CustomerService;
+import com.careerdevs.rentACar.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,37 +19,43 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
+    private UserService userService;
 
     @GetMapping("/")
     public ResponseEntity<?> getAllUsers() {
-        try {
-            List<User> allUsers = userRepository.findAll();
-            return new ResponseEntity<>(allUsers, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+        List<User> allUsers = userService.findAll();
+
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
-        Optional<User> foundUser = userRepository.findByUsername(username);
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User foundUser = userService.findUser(username);
+
+        return new ResponseEntity<>(foundUser, HttpStatus.OK);
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<?> getUserByCustomerId(@PathVariable Long customerId) {
+        User foundUser = userService.findUserByCustomerId(customerId);
+
         return new ResponseEntity<>(foundUser, HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<?> createNewUser(@RequestBody User userData) {
-        try {
-            User createdUser = userRepository.save(userData);
-            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+        User createdUser = userService.saveUser(userData);
+
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    //TODO: Get User by customerId
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> deleteUserByUsername(@PathVariable String username) {
+        User user = userService.findUser(username);
+
+        userService.deleteUser(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
 }

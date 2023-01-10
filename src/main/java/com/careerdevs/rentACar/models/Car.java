@@ -88,12 +88,13 @@ public class Car {
 
     }
 
-    public Car(String make, String model, double rate, boolean isRented, boolean fullOfGas, double currentGas) {
+    public Car(String make, String model, double rate, boolean isRented, boolean fullOfGas, double currentGas, Branch branch) {
         this.make = make;
         this.model = model;
         this.rate = rate;
         this.isRented = isRented;
         this.fullOfGas = fullOfGas;
         this.currentGas = currentGas;
+        this.branch = branch;
     }
 }

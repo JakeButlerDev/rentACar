@@ -17,6 +17,7 @@ public class Branch {
     @OneToMany(mappedBy = "branch")
     private Set<Car> carInventory;
 
+    //TODO: Allow nested object for location
 //    public static class location {
 //        private String street;
 //        private String city;

@@ -42,11 +42,11 @@ public class CarController {
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
-//    @GetMapping("/{branchId}")
-//    public ResponseEntity<?> getCarsByBranchId(@PathVariable Long branchId) {
-//        Set<Car> allCarsAtBranch = carRepository.findAllByBranch_id(branchId);
-//        return new ResponseEntity<>(allCarsAtBranch, HttpStatus.OK);
-//    }
+    @GetMapping("/{branchId}")
+    public ResponseEntity<?> getCarsByBranchId(@PathVariable Long branchId) {
+        Set<Car> allCarsAtBranch = carRepository.findAllByBranch_id(branchId);
+        return new ResponseEntity<>(allCarsAtBranch, HttpStatus.OK);
+    }
 
     @PostMapping("/")
     public ResponseEntity<?> createNewCar(@RequestBody Car newCarData) {

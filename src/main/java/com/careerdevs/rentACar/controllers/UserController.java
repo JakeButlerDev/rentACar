@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<?> getAllUsers() {
         try {
             List<User> allUsers = userRepository.findAll();
@@ -47,4 +47,7 @@ public class UserController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
+
+    //TODO: Get User by customerId
+
 }

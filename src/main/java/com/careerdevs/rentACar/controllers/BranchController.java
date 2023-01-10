@@ -31,7 +31,7 @@ public class BranchController {
         return new ResponseEntity<>(allBranches, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{branchId}")
     public ResponseEntity<?> getBranchById(@PathVariable Long branchId) {
         Branch branch = branchRepository.findById(branchId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST)
@@ -49,5 +49,6 @@ public class BranchController {
         }
     }
 
+    //TODO: Update branch info by id
 
 }

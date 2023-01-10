@@ -33,7 +33,15 @@ public class CustomerController {
         return new ResponseEntity<>(allCustomers, HttpStatus.OK);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/{customerId}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long customerId) {
+        Customer requestedCustomer = customerRepository.findById(customerId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        return new ResponseEntity<>(requestedCustomer, HttpStatus.OK);
+    }
+
+    @GetMapping("/username/{username}")
     public ResponseEntity<Customer> getCustomerByUsername(@PathVariable String username) {
         Customer customer = customerRepository.findByUser_username(username).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST)
@@ -46,6 +54,9 @@ public class CustomerController {
         Customer createdCustomer = customerRepository.save(newCustomerData);
         return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
     }
+
+    //TODO: Update customer by id or username
+
 
     //TODO: Get all customers by branch id
 //    @PostMapping("/{branchId}/")

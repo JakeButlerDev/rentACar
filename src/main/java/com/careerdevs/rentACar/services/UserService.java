@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -35,7 +34,7 @@ public class UserService {
     }
 
     public User findUserByCustomerId(Long customerId) {
-        return userRepository.findByCustomer_id(customerId).orElseThrow(
+        return userRepository.findByCustomerId(customerId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
     }

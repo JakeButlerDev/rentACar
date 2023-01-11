@@ -54,7 +54,7 @@ public class BranchController {
         return new ResponseEntity<>(newBranch, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{branchId")
+    @PostMapping("/{branchId}")
     public ResponseEntity<?> updateBranchById(@RequestBody Branch updatedData, @PathVariable Long branchId) {
         Branch foundBranch = branchService.findBranch(branchId);
 

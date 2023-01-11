@@ -9,6 +9,9 @@ public class User {
     private String username;
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
+
     public String getUsername() {
         return username;
     }

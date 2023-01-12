@@ -5,6 +5,7 @@ import com.careerdevs.rentACar.repositories.BranchRepository;
 import com.careerdevs.rentACar.repositories.CarRepository;
 import com.careerdevs.rentACar.repositories.CustomerRepository;
 import com.careerdevs.rentACar.services.BranchService;
+import com.careerdevs.rentACar.services.CarService;
 import com.careerdevs.rentACar.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class BranchController {
     private BranchService branchService;
 
     @Autowired
-    private CarRepository carRepository;
+    private CarService carService;
 
     @Autowired
     private CustomerService customerService;
@@ -64,6 +65,13 @@ public class BranchController {
         //TODO: Also compare List of customers and cars, if updatedData has unincluded values then add to current List
 
         return new ResponseEntity<>(foundBranch, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{branchId}")
+    public ResponseEntity<?> deleteById(@PathVariable Long branchId) {
+        Branch branch = branchService.delete(branchId);
+
+        return new ResponseEntity<>(branch, HttpStatus.OK);
     }
 
 }

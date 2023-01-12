@@ -5,7 +5,9 @@ import com.careerdevs.rentACar.models.Customer;
 import com.careerdevs.rentACar.repositories.BranchRepository;
 import com.careerdevs.rentACar.repositories.CustomerRepository;
 import com.careerdevs.rentACar.repositories.UserRepository;
+import com.careerdevs.rentACar.services.BranchService;
 import com.careerdevs.rentACar.services.CustomerService;
+import com.careerdevs.rentACar.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private BranchRepository branchRepository;
+    private BranchService branchService;
 
     @GetMapping("/")
     public ResponseEntity<List<Customer>> getAllCustomers() {
@@ -72,8 +71,7 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomerById(@PathVariable Long id) {
-        Customer deletedCustomer = customerService.findById(id);
-        customerService.delete(id);
+        Customer deletedCustomer = customerService.delete(id);
 
         return new ResponseEntity<>(deletedCustomer, HttpStatus.OK);
     }

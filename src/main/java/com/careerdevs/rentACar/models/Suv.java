@@ -4,10 +4,10 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("truck")
-public class Truck extends Car {
+@DiscriminatorValue("suv")
+public class Suv extends Car{
 
-    private double rate = 3.15;
+    private double rate = 2.75;
 
     public double getRate() {
         return rate;
@@ -17,9 +17,9 @@ public class Truck extends Car {
         this.rate = rate;
     }
 
-    public Truck() { }
+    public Suv() { }
 
-    public Truck(Long id, String make, String model, double rate, boolean isRented, boolean fullOfGas, double currentGas, Branch branch) {
+    public Suv(Long id, String make, String model, double rate, boolean isRented, boolean fullOfGas, double currentGas, Branch branch) {
         super(id, make, model, isRented, fullOfGas, currentGas, branch);
         this.rate = rate;
     }

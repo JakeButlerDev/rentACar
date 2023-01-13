@@ -3,8 +3,11 @@ package com.careerdevs.rentACar.models;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 
-@MappedSuperclass
-public abstract class AbstractCarType {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("null")
+public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -13,6 +16,7 @@ public abstract class AbstractCarType {
     private String model;
     private boolean isRented;
     private double currentGas;
+    private boolean fullOfGas;
 
     @ManyToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
@@ -67,14 +71,21 @@ public abstract class AbstractCarType {
         this.branch = branch;
     }
 
-    public AbstractCarType(Long id, String make, String model, boolean isRented, double currentGas, Branch branch) {
+    public boolean getFullOfGas() { return (getCurrentGas() == 1); }
+
+    public void setFullOfGas(boolean fullOfGas) {
+        this.fullOfGas = (getCurrentGas() == 1.0);
+    }
+
+    public Car(Long id, String make, String model, boolean isRented, boolean fullOfGas, double currentGas, Branch branch) {
         this.id = id;
         this.make = make;
         this.model = model;
         this.isRented = isRented;
+        this.fullOfGas = fullOfGas;
         this.currentGas = currentGas;
         this.branch = branch;
     }
 
-    public AbstractCarType() { }
+    public Car() { }
 }

@@ -1,6 +1,7 @@
 package com.careerdevs.rentACar.controllers;
 
 import com.careerdevs.rentACar.models.Branch;
+import com.careerdevs.rentACar.models.Car;
 import com.careerdevs.rentACar.models.Sedan;
 import com.careerdevs.rentACar.services.BranchService;
 import com.careerdevs.rentACar.services.CarService;
@@ -27,48 +28,57 @@ public class CarController {
 
     // Will likely get rid of since all cars should be associated with a Branch
     @GetMapping("/")
-    public ResponseEntity<List<Sedan>> getAllCars() {
-        List<Sedan> allCarsInCompany = carService.findAll();
+    public ResponseEntity<List<Car>> getAllCars() {
+        List<Car> allCarsInCompany = carService.findAll();
 
         return new ResponseEntity<>(allCarsInCompany, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Sedan> getById(@PathVariable Long id) {
-        Sedan sedan = carService.findCar(id);
+    public ResponseEntity<Car> getById(@PathVariable Long id) {
+        Car sedan = carService.findCar(id);
 
         return new ResponseEntity<>(sedan, HttpStatus.OK);
     }
 
     @GetMapping("branch/{branchId}")
-    public ResponseEntity<Set<Sedan>> getCarsByBranchId(@PathVariable Long branchId) {
+    public ResponseEntity<Set<Car>> getCarsByBranchId(@PathVariable Long branchId) {
         Branch branch = branchService.findBranch(branchId);
-        Set<Sedan> carsInBranches = carService.getBranchCars(branch);
+        Set<Car> carsInBranches = carService.getBranchCars(branch);
 
         return new ResponseEntity<>(carsInBranches, HttpStatus.OK);
     }
 
     //TODO: Get Car by customerId
 
-    @PostMapping("/")
-    public ResponseEntity<Sedan> createNewCar(@RequestBody Sedan newSedanData) {
-        Sedan createdSedan = carService.saveCar(newSedanData);
+    //TODO: Get car by discriminator value type (sedan, truck, suv)
 
-        return new ResponseEntity<>(createdSedan, HttpStatus.CREATED);
+    @PostMapping("/")
+    public ResponseEntity<Car> createNewCar(@RequestBody Car newCarData) {
+        Car createdCar = carService.saveCar(newCarData);
+
+        return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
     }
 
-    @PostMapping("branch/{branchId}")
-    public ResponseEntity<Sedan> updateCarToBranch(@RequestBody Sedan newSedanData, @PathVariable Long branchId) {
-        Branch branch = branchService.findBranch(branchId);
-        newSedanData.setBranch(branch);
+//    @PostMapping("/{id}")
+//    public ResponseEntity<Car> updateCarById(@RequestBody Car updatedCarData, @PathVariable Long id) {
+//        Car car = carService.findCar(id);
+//
+//        if (car.g)
+//    }
 
-        return new ResponseEntity<>(carService.saveCar(newSedanData), HttpStatus.OK);
+    @PostMapping("branch/{branchId}")
+    public ResponseEntity<Car> updateCarToBranch(@RequestBody Car newCarData, @PathVariable Long branchId) {
+        Branch branch = branchService.findBranch(branchId);
+        newCarData.setBranch(branch);
+
+        return new ResponseEntity<>(carService.saveCar(newCarData), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Sedan> deleteCarById(@PathVariable Long carId) {
-        Sedan sedan = carService.deleteCar(carId);
+    public ResponseEntity<Car> deleteCarById(@PathVariable Long carId) {
+        Car car = carService.deleteCar(carId);
 
-        return new ResponseEntity<>(sedan, HttpStatus.OK);
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 }

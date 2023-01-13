@@ -1,6 +1,7 @@
 package com.careerdevs.rentACar.services;
 
 import com.careerdevs.rentACar.models.Branch;
+import com.careerdevs.rentACar.models.Car;
 import com.careerdevs.rentACar.models.Sedan;
 import com.careerdevs.rentACar.repositories.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,28 +18,28 @@ public class CarService {
     @Autowired
     private CarRepository carRepository;
 
-    public Sedan saveCar(Sedan sedan) {
+    public Car saveCar(Car sedan) {
         return carRepository.save(sedan);
     }
 
-    public Sedan findCar(Long carId) {
+    public Car findCar(Long carId) {
         return carRepository.findById(carId).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Sedan deleteCar(Long id) {
-        Sedan foundSedan = carRepository.findById(id).orElseThrow(
+    public Car deleteCar(Long id) {
+        Car foundCar = carRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        carRepository.delete(foundSedan);
+        carRepository.deleteById(id);
 
-        return foundSedan;
+        return foundCar;
     }
 
-    public List<Sedan> findAll() {
+    public List<Car> findAll() {
         return carRepository.findAll();
     }
 
-    public Set<Sedan> getBranchCars(Branch branch) {
+    public Set<Car> getBranchCars(Branch branch) {
         return carRepository.findAllByBranch_id(branch.getId());
     }
 }

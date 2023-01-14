@@ -1,6 +1,8 @@
 package com.careerdevs.rentACar.services;
 
 import com.careerdevs.rentACar.models.Branch;
+import com.careerdevs.rentACar.models.Car;
+import com.careerdevs.rentACar.models.CarType;
 import com.careerdevs.rentACar.repositories.BranchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BranchService {
@@ -38,4 +41,6 @@ public class BranchService {
     public List<Branch> findAll() {
         return branchRepository.findAll();
     }
+
+//    public Set<Car> findAllCars(CarType carType) { return branchRepository.findCarsByType(carType); }
 }

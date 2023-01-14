@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue("null")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Car {
 
     @Id
@@ -16,7 +14,10 @@ public class Car {
     private String model;
     private boolean isRented;
     private double currentGas;
-    private boolean fullOfGas;
+    private boolean fullOfGas = (getCurrentGas() == 1);
+
+    @Convert(converter = CarTypeAttributeConverter.class)
+    private CarType carType;
 
     @ManyToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
@@ -71,13 +72,21 @@ public class Car {
         this.branch = branch;
     }
 
-    public boolean getFullOfGas() { return (getCurrentGas() == 1); }
+    public boolean getFullOfGas() { return fullOfGas; }
 
     public void setFullOfGas(boolean fullOfGas) {
-        this.fullOfGas = (getCurrentGas() == 1.0);
+        this.fullOfGas = fullOfGas;
     }
 
-    public Car(Long id, String make, String model, boolean isRented, boolean fullOfGas, double currentGas, Branch branch) {
+    public CarType getCarType() {
+        return carType;
+    }
+
+    public void setCarType(CarType carType) {
+        this.carType = carType;
+    }
+
+    public Car(Long id, String make, String model, boolean isRented, boolean fullOfGas, double currentGas, Branch branch, CarType carType) {
         this.id = id;
         this.make = make;
         this.model = model;
@@ -85,6 +94,7 @@ public class Car {
         this.fullOfGas = fullOfGas;
         this.currentGas = currentGas;
         this.branch = branch;
+        this.carType = carType;
     }
 
     public Car() { }

@@ -24,13 +24,13 @@ public class UserService {
     }
 
     // Once deleteByUsername is completed in repository, replace so user can be returned with this method
-    public User deleteUser(User user) {
-        User foundUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
+    public User deleteUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         userRepository.delete(user);
 
-        return foundUser;
+        return user;
     }
 
     public User findUserByCustomerId(Long customerId) {

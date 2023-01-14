@@ -15,7 +15,7 @@ public class Branch {
     @OneToMany(mappedBy = "homeBranch")
     private Set<Customer> customers;
     @OneToMany(mappedBy = "branch")
-    private Set<Car> carInventory;
+    private Set<Sedan> sedanInventory;
 
     //TODO: Allow nested object for location
 //    public static class location {
@@ -98,12 +98,12 @@ public class Branch {
         this.customers = customers;
     }
 
-    public Set<Car> getCarInventory() {
-        return carInventory;
+    public Set<Sedan> getCarInventory() {
+        return sedanInventory;
     }
 
-    public void setCarInventory(Set<Car> carInventory) {
-        this.carInventory = carInventory;
+    public void setCarInventory(Set<Sedan> sedanInventory) {
+        this.sedanInventory = sedanInventory;
     }
 
     public Branch() {

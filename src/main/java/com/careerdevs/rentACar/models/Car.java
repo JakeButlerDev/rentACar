@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Car {
 
     @Id
@@ -11,10 +12,13 @@ public class Car {
     private Long id;
     private String make;
     private String model;
-    private double rate;
     private boolean isRented;
-    private boolean fullOfGas;
     private double currentGas;
+    private boolean fullOfGas = (getCurrentGas() == 1);
+
+    @Convert(converter = CarTypeAttributeConverter.class)
+    private CarType carType;
+
     @ManyToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
     @JsonIncludeProperties("id")
@@ -44,28 +48,12 @@ public class Car {
         this.model = model;
     }
 
-    public double getRate() {
-        return rate;
-    }
-
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
-
     public boolean isRented() {
         return isRented;
     }
 
     public void setRented(boolean rented) {
         isRented = rented;
-    }
-
-    public boolean isFullOfGas() {
-        return fullOfGas;
-    }
-
-    public void setFullOfGas(boolean fullOfGas) {
-        this.fullOfGas = fullOfGas;
     }
 
     public double getCurrentGas() {
@@ -84,20 +72,30 @@ public class Car {
         this.branch = branch;
     }
 
-    public Car() {
+    public boolean getFullOfGas() { return fullOfGas; }
 
+    public void setFullOfGas(boolean fullOfGas) {
+        this.fullOfGas = fullOfGas;
     }
 
-    public Car(String make, String model, double rate, boolean isRented, boolean fullOfGas, double currentGas, Branch branch) {
+    public CarType getCarType() {
+        return carType;
+    }
+
+    public void setCarType(CarType carType) {
+        this.carType = carType;
+    }
+
+    public Car(Long id, String make, String model, boolean isRented, boolean fullOfGas, double currentGas, Branch branch, CarType carType) {
+        this.id = id;
         this.make = make;
         this.model = model;
-        this.rate = rate;
         this.isRented = isRented;
         this.fullOfGas = fullOfGas;
         this.currentGas = currentGas;
         this.branch = branch;
+        this.carType = carType;
     }
+
+    public Car() { }
 }
-
-
-//TODO: Create abstract class of car style (sedan, truck, etc) to extend Car

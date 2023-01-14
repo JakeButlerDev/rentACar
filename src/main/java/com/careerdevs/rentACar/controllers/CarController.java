@@ -2,9 +2,7 @@ package com.careerdevs.rentACar.controllers;
 
 import com.careerdevs.rentACar.models.Branch;
 import com.careerdevs.rentACar.models.Car;
-import com.careerdevs.rentACar.repositories.BranchRepository;
-import com.careerdevs.rentACar.repositories.CarRepository;
-import com.careerdevs.rentACar.repositories.CustomerRepository;
+import com.careerdevs.rentACar.models.CarType;
 import com.careerdevs.rentACar.services.BranchService;
 import com.careerdevs.rentACar.services.CarService;
 import com.careerdevs.rentACar.services.CustomerService;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,26 +37,50 @@ public class CarController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Car> getById(@PathVariable Long id) {
-        Car car = carService.findCar(id);
+        Car sedan = carService.findCar(id);
 
-        return new ResponseEntity<>(car, HttpStatus.OK);
+        return new ResponseEntity<>(sedan, HttpStatus.OK);
     }
 
     @GetMapping("branch/{branchId}")
     public ResponseEntity<Set<Car>> getCarsByBranchId(@PathVariable Long branchId) {
         Branch branch = branchService.findBranch(branchId);
-        Set<Car> carsInBranch = carService.getBranchCars(branch);
+        Set<Car> carsInBranches = carService.getBranchCars(branch);
 
-        return new ResponseEntity<>(carsInBranch, HttpStatus.OK);
+        return new ResponseEntity<>(carsInBranches, HttpStatus.OK);
     }
 
-    //TODO: Get Car by customerId
+    //TODO: Get all cars by carType
+//    @GetMapping("/style/{carType}")
+//    public ResponseEntity<List<Car>> getAllCarsByType (@PathVariable String carType) {
+//
+//    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<?> getCarByCustomerId (@PathVariable Long customerId) {
+        Optional<Car> car = carService.findByCustomerid(customerId);
+
+        return new ResponseEntity<>(car, HttpStatus.OK);
+    }
 
     @PostMapping("/")
     public ResponseEntity<Car> createNewCar(@RequestBody Car newCarData) {
         Car createdCar = carService.saveCar(newCarData);
 
         return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{carType}/{id}")
+    public ResponseEntity<Car> updateCarTypeById(@RequestBody Car updatedCarData, @PathVariable String carType, @PathVariable Long id) {
+        Car car = carService.findCar(id);
+        CarType type = carService.setCarType(carType);
+
+        if (car.getCarType() == null) {
+            car.setCarType(type);
+        }
+        carService.saveCar(car);
+
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
     @PostMapping("branch/{branchId}")

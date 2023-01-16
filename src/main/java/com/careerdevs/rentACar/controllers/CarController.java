@@ -3,9 +3,8 @@ package com.careerdevs.rentACar.controllers;
 import com.careerdevs.rentACar.models.Branch;
 import com.careerdevs.rentACar.models.Car;
 import com.careerdevs.rentACar.models.CarType;
-import com.careerdevs.rentACar.services.BranchService;
-import com.careerdevs.rentACar.services.CarService;
-import com.careerdevs.rentACar.services.CustomerService;
+import com.careerdevs.rentACar.models.Sedan;
+import com.careerdevs.rentACar.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +21,14 @@ public class CarController {
     @Autowired
     private CarService carService;
     @Autowired
-    private BranchService branchService;
+    private TruckService truckService;
+    @Autowired
+    private SedanService sedanService;
+    @Autowired
+    private SuvService suvService;
 
     @Autowired
-    private CustomerService customerService;
+    private BranchService branchService;
 
     // Will likely get rid of since all cars should be associated with a Branch
     @GetMapping("/")
@@ -50,11 +53,26 @@ public class CarController {
         return new ResponseEntity<>(carsInBranches, HttpStatus.OK);
     }
 
-    //TODO: Get all cars by carType
-//    @GetMapping("/style/{carType}")
-//    public ResponseEntity<List<Car>> getAllCarsByType (@PathVariable String carType) {
-//
-//    }
+    @GetMapping("/style/{carType}")
+    public ResponseEntity<List<Car>> getAllCarsByType (@PathVariable String carType) {
+
+        switch (carType.toLowerCase()) {
+            case "sedan":
+                List<Car> allSedans = sedanService.findAll();
+                return new ResponseEntity<>(allSedans, HttpStatus.OK);
+
+            case "suv":
+                List<Car> allSuvs = suvService.findAll();
+                return new ResponseEntity<>(allSuvs, HttpStatus.OK);
+
+            case "truck":
+                List<Car> allTrucks = truckService.findAll();
+                return new ResponseEntity<>(allTrucks, HttpStatus.OK);
+
+            default:
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<?> getCarByCustomerId (@PathVariable Long customerId) {
@@ -65,7 +83,18 @@ public class CarController {
 
     @PostMapping("/")
     public ResponseEntity<Car> createNewCar(@RequestBody Car newCarData) {
+        //TODO: Set carsubtype at first initialization?
         Car createdCar = carService.saveCar(newCarData);
+        switch (newCarData.getCarType()) {
+            case SEDAN:
+                createdCar.setCarType(newCarData.getCarType());
+//                set rate dependent on carType
+            case SUV:
+                createdCar.setCarType(newCarData.getCarType());
+            case TRUCK:
+                createdCar.setCarType(newCarData.getCarType());
+        }
+        carService.saveCar(createdCar);
 
         return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
     }

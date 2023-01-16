@@ -3,12 +3,13 @@ package com.careerdevs.rentACar.repositories;
 import com.careerdevs.rentACar.models.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@NoRepositoryBean
+@Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
 
     Set<Car> findAllByBranch_id(Long branchId);
@@ -17,4 +18,5 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 //    List<Car> findAllByCarType(String carType);
 
     Optional<Car> findByCustomer_id(Long customerId);
+
 }

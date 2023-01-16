@@ -7,8 +7,6 @@ public class Truck extends Car {
 
     private double rate = 3.15;
 
-
-
     public double getRate() {
         return rate;
     }

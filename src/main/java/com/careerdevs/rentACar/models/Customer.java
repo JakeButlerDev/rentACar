@@ -22,6 +22,9 @@ public class Customer {
     @JsonIncludeProperties("id")
     private Branch homeBranch;
 
+    @OneToOne(mappedBy = "customer")
+    private Car car;
+
     public Long getId() {
         return id;
     }

@@ -3,7 +3,7 @@ package com.careerdevs.rentACar.services;
 import com.careerdevs.rentACar.models.Branch;
 import com.careerdevs.rentACar.models.Car;
 import com.careerdevs.rentACar.models.CarType;
-import com.careerdevs.rentACar.repositories.CarRepository;
+import com.careerdevs.rentACar.repositories.SuvRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,42 +14,49 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class CarService {
-
+public class SuvService extends CarService{
+    
     @Autowired
-    private CarRepository carRepository;
+    private SuvRepository suvRepository;
 
+    @Override
     public Car saveCar(Car car) {
-        return carRepository.save(car);
+        return suvRepository.save(car);
     }
 
+    @Override
     public Car findCar(Long carId) {
-        return carRepository.findById(carId).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return suvRepository.findById(carId).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @Override
     public Car deleteCar(Long id) {
-        Car foundCar = carRepository.findById(id).orElseThrow(
+        Car foundCar = suvRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        carRepository.deleteById(id);
+        suvRepository.deleteById(id);
 
         return foundCar;
     }
 
+    @Override
     public List<Car> findAll() {
-        return carRepository.findAll();
+        return suvRepository.findAll();
     }
 
+    @Override
     public Set<Car> getBranchCars(Branch branch) {
-        return carRepository.findAllByBranch_id(branch.getId());
+        return suvRepository.findAllByBranch_id(branch.getId());
     }
 
+    @Override
     public Optional<Car> findByCustomerid (Long customerId) {
-        return Optional.ofNullable(carRepository.findByCustomer_id(customerId).orElseThrow(
+        return Optional.ofNullable(suvRepository.findByCustomer_id(customerId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         ));
     }
 
+    @Override
     public CarType setCarType(String carType) {
         CarType type = null;
         switch (carType.toLowerCase()) {
@@ -59,5 +66,4 @@ public class CarService {
         }
         return type;
     }
-
 }

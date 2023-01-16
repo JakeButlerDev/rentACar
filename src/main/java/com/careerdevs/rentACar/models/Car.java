@@ -24,6 +24,11 @@ public class Car {
     @JsonIncludeProperties("id")
     private Branch branch;
 
+    @OneToOne
+    @JoinColumn(name = "car_id", referencedColumnName = "id")
+    @JsonIncludeProperties( {"id", "carType"} )
+    private Customer customer;
+
     public Long getId() {
         return id;
     }
@@ -84,6 +89,14 @@ public class Car {
 
     public void setCarType(CarType carType) {
         this.carType = carType;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Car(Long id, String make, String model, boolean isRented, boolean fullOfGas, double currentGas, Branch branch, CarType carType) {
